@@ -1,0 +1,73 @@
+import Bici.*
+import Deposito.*
+import accesorios.*
+
+test "tests bici y accesorios" {
+	
+	const bici = new Bici()
+	const canasto = new Canasto
+	bici.setLargo(121)
+	bici.setMarca("Yamaha")
+	bici.setRodado(26)
+	bici.agregarAccesorio(farolito)
+	
+	assert.that(bici.marca() == "Yamaha")
+	assert.equals(bici.velocidadDeCrucero(), 32)
+	assert.that(bici.tieneLuz())
+	assert.equals(bici.peso(), 13.5)
+	assert.equals(bici.cantLivianos(), 1)
+	bici.agregarAccesorio(canasto)
+	canasto.setVolumen(10)
+	assert.equals(canasto.peso(), 1)
+	assert.equals(bici.peso(), 14.5)
+}
+
+test "deposito y bicis" {
+	
+	const bici = new Bici()
+	bici.setLargo(121)
+	bici.setMarca("Yamaha")
+	bici.setRodado(26)
+	bici.agregarAccesorio(farolito)
+	
+	const bici3 = new Bici()
+	bici3.setLargo(127)
+	bici3.setMarca("Yamaha")
+	bici3.setRodado(26)
+	bici3.agregarAccesorio(farolito)
+	
+	const bici1 = new Bici()
+	bici1.setLargo(115)
+	bici1.setMarca("Chupi")
+	bici1.setRodado(20)
+	
+	const bici2 = new Bici()
+	const canasto = new Canasto()
+	bici2.setLargo(180)
+	bici2.setMarca("Yamaha")
+	bici2.setRodado(40)
+	bici2.agregarAccesorio(canasto)
+	canasto.setVolumen(15)
+	
+	const bici4 = new Bici()
+	const canasto1 = new Canasto()
+	bici4.setLargo(190)
+	bici4.setMarca("Chupi")
+	bici4.setRodado(42)
+	bici4.agregarAccesorio(canasto1)
+	canasto1.setVolumen(20)
+	
+	const deposito = new Deposito()
+	deposito.agregarBici(bici)
+	deposito.agregarBici(bici1)
+	deposito.agregarBici(bici2)
+	deposito.agregarBici(bici3)
+	deposito.agregarBici(bici4)
+	
+	assert.that(deposito.posibleCompaniera(bici) == [bici3])
+	assert.that(deposito.bicisMarcas() == #{"Yamaha", "Chupi"})
+	assert.equals(deposito.cargaTotalBicisLargas(), 70)
+	assert.that(not deposito.tieneBiciCarga(45))
+	assert.equals(deposito.biciMasRapidaMarca(), "Chupi")
+	assert.equals(deposito.bicisSinAccesorios(), 1)
+}
